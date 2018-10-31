@@ -1,0 +1,67 @@
+\documentclass[a4paper]{article}
+
+%\usepackage{mathptmx}
+%\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{subcaption}
+\usepackage[width=.8\textwidth]{caption}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{longtable}
+\usepackage{minted}
+\usepackage{xargs}
+\usepackage[pdftex,dvipsnames]{xcolor}
+\usepackage{pdfpages}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\setlength{\marginparwidth}{2cm}
+
+\usepackage{titlesec}
+
+\titlespacing*\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing*\subsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing*\subsubsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+\begin{document}
+\title{Knowledge and the Web \\ 
+\large{Proposal to Detect Fallacies}}
+\author{\textsc{Group 1: Pieter Delobelle, Murilo Cunha, Eric Massip}}
+\date{\today}
+\maketitle
+
+\section{Research question}
+The general research question is to detect fallacies, but given the large number of possible fallacies---both formal and informal---we choose to focus primarily on the \emph{ad hominem} fallacy. 
+
+This topic is related to fake news through the media outlets. Debates and interviews are a large part of the contemporary media. But by allowing invalid arguments to broadcast to billions of people, incorrect beliefs can be formed. Since some invalid arguments slip through the cracks of the journalists, automatically detecting fallacies can be a step towards better, less fake news.
+
+In addition to this, President Donald Trump has made the term \emph{fake news} in itself an \emph{ad hominem} insult towards news outlets as well. 
+
+\section{Datasets}
+
+\subsection{General fallacy dataset~\cite{Habernal.et.al.2017.EMNLP}}
+TU Darmstadt assembled a small dataset (~1300 sentences) of both English and German sentences, labeled with one of 5 fallacies or none. These fallacies are:
+
+\begin{itemize}
+    \item ad hominem
+    \item appeal to emotion
+    \item hasty generalization
+    \item irrelevant authority
+    \item red herring
+\end{itemize}
+
+Some of these, like \emph{irrelevant authority}, are more conceptually. Others, like \emph{ad hominem} or \emph{incomplete comparison} (not in dataset), are more formally defined. In conclusion, this dataset might be a good starting point, but lacks a lot of interesting fallacies. Also, the small size might be an obstacle later on, requiring us to label additional sentences, which can be challenging to do in a short timeframe. 
+
+\subsection{Ad hominem dataset~\cite{Habernal.et.al.2018.NAACL.adhominem}}
+This dataset is also assembled by TU Darmstadt, focussed on the likelihood of a discussion ending in an \emph{ad hominem} attack. The data was sourced from a Reddit community focused on discussions (Change My View) and labeled by multiple people.  
+
+Aside form the dataset, the related article~\cite{Habernal.et.al.2018.NAACL.adhominem} might also be an excellent starting point for the analysis of the \emph{ad hominem} fallacy, even though it is focused on how controversial statements have a higher than average change to end in an \emph{ad hominem} attack.
+
+\section{Examples}
+
+\bibliographystyle{IEEEtran}
+\bibliography{main}
+
+\end{document} 
