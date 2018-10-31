@@ -42,6 +42,8 @@ In addition to this, President Donald Trump has made the term \emph{fake news} i
 \section{Datasets}
 
 \subsection{General fallacy dataset~\cite{Habernal.et.al.2017.EMNLP}}
+\url{https://github.com/UKPLab/argotario/}
+
 TU Darmstadt assembled a small dataset (~1300 sentences) of both English and German sentences, labeled with one of 5 fallacies or none. These fallacies are:
 
 \begin{itemize}
@@ -55,11 +57,22 @@ TU Darmstadt assembled a small dataset (~1300 sentences) of both English and Ger
 Some of these, like \emph{irrelevant authority}, are more conceptually. Others, like \emph{ad hominem} or \emph{incomplete comparison} (not in dataset), are more formally defined. In conclusion, this dataset might be a good starting point, but lacks a lot of interesting fallacies. Also, the small size might be an obstacle later on, requiring us to label additional sentences, which can be challenging to do in a short timeframe. 
 
 \subsection{Ad hominem dataset~\cite{Habernal.et.al.2018.NAACL.adhominem}}
+\url{https://github.com/UKPLab/naacl2018-before-name-calling-habernal-et-al}
 This dataset is also assembled by TU Darmstadt, focussed on the likelihood of a discussion ending in an \emph{ad hominem} attack. The data was sourced from a Reddit community focused on discussions (Change My View) and labeled by multiple people.  
 
 Aside form the dataset, the related article~\cite{Habernal.et.al.2018.NAACL.adhominem} might also be an excellent starting point for the analysis of the \emph{ad hominem} fallacy, even though it is focused on how controversial statements have a higher than average change to end in an \emph{ad hominem} attack.
-
 \section{Examples}
+
+\begin{itemize}
+    \item \emph{Your argument that I should stop stealing candy from the corner store is no good. You told me yourself just one week ago that you, too, stole candy when you were a kid.}\footnote{Borrowed from~\cite{Walton1998}, p. 18}.
+    
+    In this quote, the second sentence is an \emph{ad hominem} attack, because tries to paint the first arguer as hypocritical. 
+
+    Some peculiar features in this sentence are the combination of the words `\emph{you}' and `\emph{too}', indicating the behavior or an action of the first speaker  that contradicts his claim. Also the sequence ``\emph{you told me yourself}'' seems to attack an earlier statement of the first speaker, perhaps even out of an entirely different context. Both are features on a word or n-gram level.
+
+    The sequence ``\emph{your argument (\dots) is no good}'' does attack the argument instead of the first speaker, and later on an \emph{ad hominem} attack follows. So depending on the dataset, this sequence might be ubiquitous in the set of fallacies.
+
+\end{itemize}
 
 \bibliographystyle{IEEEtran}
 \bibliography{main}
