@@ -8,13 +8,16 @@
 \usepackage{float}
 \usepackage{hyperref}
 \usepackage[utf8]{inputenc}
-\usepackage{booktabs}
 \usepackage{multicol}
 \usepackage{longtable}
 \usepackage{minted}
 \usepackage{xargs}
 \usepackage[pdftex,dvipsnames]{xcolor}
 \usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{multirow}
+\usepackage{rotating,tabularx}
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 \newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
 \setlength{\marginparwidth}{2cm}
@@ -56,11 +59,17 @@ TU Darmstadt assembled a small dataset (~1300 sentences) of both English and Ger
 
 Some of these, like \emph{irrelevant authority}, are more conceptually. Others, like \emph{ad hominem} or \emph{incomplete comparison} (not in dataset), are more formally defined. In conclusion, this dataset might be a good starting point, but lacks a lot of interesting fallacies. Also, the small size might be an obstacle later on, requiring us to label additional sentences, which can be challenging to do in a short timeframe. 
 
+More specifically, for the \emph{ad hominem} case, there are 589 records of \emph{ad hominem} fallacies and non-fallacies. Out of those, 382 were manually selected as adequate for training data. 
+
 \subsection{Ad hominem dataset~\cite{Habernal.et.al.2018.NAACL.adhominem}}
 \url{https://github.com/UKPLab/naacl2018-before-name-calling-habernal-et-al}
 This dataset is also assembled by TU Darmstadt, focussed on the likelihood of a discussion ending in an \emph{ad hominem} attack. The data was sourced from a Reddit community focused on discussions (Change My View) and labeled by multiple people.  
 
 Aside form the dataset, the related article~\cite{Habernal.et.al.2018.NAACL.adhominem} might also be an excellent starting point for the analysis of the \emph{ad hominem} fallacy, even though it is focused on how controversial statements have a higher than average change to end in an \emph{ad hominem} attack.
+
+In total, this dataset contains 29,278 paragraphs or comments, of which 3,866 are labeled as \emph{ad hominem}.
+
+
 \section{Examples}
 
 \begin{itemize}
@@ -81,13 +90,45 @@ Aside form the dataset, the related article~\cite{Habernal.et.al.2018.NAACL.adho
     In the second sentence, \emph{understand the English language} is very likely to appear in an \emph{ad hominem} attack as diminishing the ability of the other person to understand English. 
     
 \end{itemize}
-
+ 
 \section{Intended model outcome}
 The ideal model should---given our earlier requirements---be able to predict with a certain accuracy/confidence if a given sentence or paragraph contains an \emph{ad hominem} fallacy. The confidence of the model will depend on the accuracy we are able to achieve. 
 
 Our model will not classify if the given quote contains a fallacy or not. It will classify if the given quote contains an \emph{ad hominem} type of fallacy or not.
 
 The user would have to keep in mind that the length of the paragraph can affect the analysis of it, meaning that more words and the interplay of those words can confuse the classifier. Furthermore, more sentences establish a bigger context and that could affect where specific sentences are fallacious or not.
+
+\begin{figure}
+    \includegraphics[width=1\textwidth]{figures/png/Model!Main_0.png}
+    \caption{UML class diagram of training input, preprocessed input, and final output.}
+    \label{fig:class-diagram}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=1\textwidth]{figures/png/Collaboration2!Interaction1!UntrainedModel_2.png}
+    \caption{UML sequence diagram of the untrained model.}
+    \label{fig:untrained-diagram}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=1\textwidth]{figures/png/Collaboration1!Interaction1!TrainedModel_1.png}
+    \caption{UML sequence diagram of the trained model.}
+    \label{fig:trained-diagram}
+\end{figure}
+
+\section{Data schema}
+Figure~\ref{fig:class-diagram} describes the classes input for the machine learning model. 
+
+\begin{enumerate}
+    \item \textbf{Paragraph}: Raw paragraph, either inserted by the user and thus unlabeled, or from a labeled dataset for training.
+    \item \textbf{Preprocessed paragraph}: Same as the aforementioned \emph{Paragraph}, but with an added relation to a set of $N$-Grams. 
+    \item \textbf{$N$-Gram}: Collection of subsets of $N$ words from the preprocessed paragraph. 
+    \item \textbf{Output}: Output data containing the prediction as a numerical value, alongside the original paragraph.
+\end{enumerate}
+
+\section{Interaction overview}
+The workflow for our model is split into two parts, depending on the goal. For training the model, the sequence diagram in Figure~\ref{fig:untrained-diagram} describes the basic approach and Figure~\ref{fig:trained-diagram} illustrates how an end user can call the trained model to make a classification---in the literature often called a prediction---on paragraphs provided by him or her. 
+
 
 \bibliographystyle{IEEEtran}
 \bibliography{main}
