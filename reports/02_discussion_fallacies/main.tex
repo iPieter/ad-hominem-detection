@@ -12,12 +12,13 @@
 \usepackage{longtable}
 \usepackage{minted}
 \usepackage{xargs}
-\usepackage[pdftex,dvipsnames]{xcolor}
+\usepackage[pdftex,dvipsnames,table,xcdraw]{xcolor}
 \usepackage{pdfpages}
 \usepackage{booktabs}
-\usepackage[table,xcdraw]{xcolor}
 \usepackage{multirow}
 \usepackage{rotating,tabularx}
+\usepackage{tabularx,ragged2e}
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}X}
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 \newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
 \setlength{\marginparwidth}{2cm}
@@ -60,6 +61,23 @@ TU Darmstadt assembled a small dataset (~1300 sentences) of both English and Ger
 Some of these, like \emph{irrelevant authority}, are more conceptually. Others, like \emph{ad hominem} or \emph{incomplete comparison} (not in dataset), are more formally defined. In conclusion, this dataset might be a good starting point, but lacks a lot of interesting fallacies. Also, the small size might be an obstacle later on, requiring us to label additional sentences, which can be challenging to do in a short timeframe. 
 
 More specifically, for the \emph{ad hominem} case, there are 589 records of \emph{ad hominem} fallacies and non-fallacies. Out of those, 382 were manually selected as adequate for training data. 
+
+\begin{sidewaystable}
+    \caption{...}\label{table:general-dataset}
+    \begin{tabularx}{\textwidth}{@{}LlLlll@{}}
+    \hline
+    fTopic                                  & Intended Fallacy & Text                                                                                                                        & Eric & Pieter & Murilo \\ \hline
+    Are humans to blame for certain animal extinctions? & No Fallacy                    & Yes, human beings have hunted and eaten animals for as long as can be shown and they are partly to blame for certain animal extinctions. & 1    & 1      & 1      \\
+    Are humans to blame for certain animal extinctions? & No Fallacy                    & Humans are not to be blamed for animal extinction.                                                                                       & 0    & 1      & 1      \\
+    Are humans to blame for certain animal extinctions? & No Fallacy                    & OF course they are!                                                                                                                      & 0    & 0      & 0      \\
+    Are humans to blame for certain animal extinctions? & No Fallacy                    & We know that only the fittest can survive in this world.                                                                                 & 0    & 0      & 0      \\
+    Are humans to blame for certain animal extinctions? & No Fallacy                    & just a test arg                                                                                                                          & 0    & 0      & 0      \\
+    Are humans to blame for certain animal extinctions? & No Fallacy                    & Yes, they are.                                                                                                                           & 0    & 0      & 0      \\
+    Are humans to blame for certain animal extinctions? & Ad Hominem                    & Extinction is not natural, you dont know what you are talking about!                                                                     & 1    & 0      & 0      \\
+    Are humans to blame for certain animal extinctions? & No Fallacy                    & Humans don't care enough for living beings.                                                                                              & 1    & 1      & 1      \\
+    Are humans to blame for certain animal extinctions? & No Fallacy                    & Humans must be blamed for using animals.                                                                                                 & 0    & 0      & 0      \\ \hline
+    \end{tabularx}
+\end{sidewaystable}
 
 \subsection{Ad hominem dataset~\cite{Habernal.et.al.2018.NAACL.adhominem}}
 \url{https://github.com/UKPLab/naacl2018-before-name-calling-habernal-et-al}
