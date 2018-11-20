@@ -18,4 +18,14 @@ cleaned_fallacies_sorted.df <- mutate(cleaned_fallacies_sorted.df, Eric = "")
 cleaned_fallacies_sorted.df <- mutate(cleaned_fallacies_sorted.df, Pieter = "")
 cleaned_fallacies_sorted.df <- mutate(cleaned_fallacies_sorted.df, Murilo = "")
 
-write_delim(cleaned_fallacies_sorted.df, "~/Projects/MAI/1st_semester/KTW/G0B34a_knowledge_and_the_web/data/general/ad_hominem_attacks.csv", delim = ",")
+ad_hominems.df <- data.frame(reddit_ad_hominem$body, reddit_ad_hominem$ad_hominem)
+ad_hominems.df$reddit_ad_hominem.ad_hominem <- ifelse(ad_hominems.df$reddit_ad_hominem.ad_hominem == "True", 1, 0)
+
+write_delim(ad_hominems.df, "~/Projects/MAI/1st_semester/KTW/G0B34a_knowledge_and_the_web/data/ad_hominem/ad_hominems_cleaned.csv", delim = ",")
+
+ad_hominem_attacks_tmp <- ad_hominem_attacks[which(ad_hominem_attacks$Eric + ad_hominem_attacks$Pieter + ad_hominem_attacks$Murilo >= 2), ]
+
+general_ad_hominems <- data.frame(ad_hominem_attacks_tmp$fallacies.df.Text, ad_hominem_attacks_tmp$fallacies.df.Intended.Fallacy)
+general_ad_hominems$ad_hominem_attacks_tmp.fallacies.df.Intended.Fallacy <- ifelse(general_ad_hominems$ad_hominem_attacks_tmp.fallacies.df.Intended.Fallacy == "Ad Hominem", 1, 0)
+
+write_delim(ad_hominems.df, "~/Projects/MAI/1st_semester/KTW/G0B34a_knowledge_and_the_web/data/general/general_dataset_cleaned.csv", delim = ",")
