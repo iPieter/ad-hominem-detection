@@ -60,10 +60,10 @@ TU Darmstadt assembled a small dataset (~1300 sentences) of both English and Ger
 
 Some of these, like \emph{irrelevant authority}, are more conceptually. Others, like \emph{ad hominem} or \emph{incomplete comparison} (not in dataset), are more formally defined. In conclusion, this dataset might be a good starting point, but lacks a lot of interesting fallacies. Also, the small size might be an obstacle later on, requiring us to label additional sentences, which can be challenging to do in a short timeframe. 
 
-More specifically, for the \emph{ad hominem} case, there are 589 records of \emph{ad hominem} fallacies and non-fallacies. Out of those, 382 were manually selected as adequate for training data. 
+More specifically, for the \emph{ad hominem} case, there are 589 records of \emph{ad hominem} fallacies and non-fallacies. Out of those, 382 were manually selected as adequate for training data. An example is shown in Table~\ref{table:general-dataset}.
 
 \begin{sidewaystable}
-    \caption{...}\label{table:general-dataset}
+    \caption{Filtered records of the first dataset, containing only rows with an \emph{ad hominem} or without fallacy.}\label{table:general-dataset}
     \begin{tabularx}{\textwidth}{@{}LlLlll@{}}
     \hline
     fTopic                                  & Intended Fallacy & Text                                                                                                                        & Eric & Pieter & Murilo \\ \hline
@@ -85,8 +85,20 @@ This dataset is also assembled by TU Darmstadt, focussed on the likelihood of a 
 
 Aside form the dataset, the related article~\cite{Habernal.et.al.2018.NAACL.adhominem} might also be an excellent starting point for the analysis of the \emph{ad hominem} fallacy, even though it is focused on how controversial statements have a higher than average change to end in an \emph{ad hominem} attack.
 
-In total, this dataset contains 29,278 paragraphs or comments, of which 3,866 are labeled as \emph{ad hominem}.
+In total, this dataset contains 29,278 paragraphs or comments, of which 3,866 are labeled as \emph{ad hominem}. An example is shown in Table~\ref{table:ah-dataset.}
 
+
+\begin{sidewaystable}
+    \caption{Relevant columns from the second dataset, sourced from Reddit.}\label{table:ah-dataset}
+    \begin{tabularx}{\textwidth}{@{}llLllllll@{}}
+        \hline
+        id & author\_name   & body                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        & controv. & downs & ups & violated\_rule & ad\_hominem \\ \hline
+        0  & deckerparkes   & What makes corporations different in this case? They have interests too.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    & 0        & 0     & 9   & 0.0            & False       \\       \\
+        1  & ZeusThunder369 & "Basically to believe a patriarchy exists, you must believe that men are maintaining a system of oppression against women, despite knowing the harm it does to both women and men.\textbackslash{}n\textbackslash{}nEG - Wanting to maintain a system that, among other things, condones severe anti-male bias in all facets of the legal system, simply isn't rational. Thus men, being the ones in power, want to oppress women so much they are willing to harm themselves to do it. It'd be like cutting off your own arm so you had something to club someone with.\textbackslash{}n\textbackslash{}nA long time ago one could say it was ignorance, but with how mainstream feminism thoughts are today this can no longer be true. So the actions of men to maintain the patriarchy must also be willful.\textbackslash{}n\textbackslash{}nHow can a person believe this, and not hate men?\textbackslash{}n\textbackslash{}n\_\_\_\_\_\textbackslash{}n\textbackslash{}n\textgreater *This is a footnote from the CMV moderators. We'd like to remind you of a couple of things. Firstly, please* ***{[}read through our rules{]}(http://www.reddit.com/r/changemyview/ wiki/rules)***. *If you see a comment that has broken one, it is more effective to report it than downvote it. Speaking of which,* ***{[}downvotes don't change views{]}(http://www.reddit.com/r/changemyview/wiki/ guidelines\#wiki\_upvoting.2Fdownvoting)****! Any questions or concerns? Feel free to* ***{[}message us{]}(http://www.reddit.com/message/compose?to =/r/changemyview)***. *Happy CMVing!*" & 0        & 0     & 5   & 0.0            & False       \\
+        2  & TheToastIsBlue & The punishment for heresy was being burned at the stake.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    & 0        & 0     & 42  & 0.0            & False       \\ \hline
+        
+    \end{tabularx}
+\end{sidewaystable}
 
 \section{Examples}
 
@@ -103,7 +115,7 @@ In total, this dataset contains 29,278 paragraphs or comments, of which 3,866 ar
     
     This is an example of quote which could potentially be classified as an \emph{ad hominem} attack.
     
-    At the start of the quote, the contraction ``\emph{You're}`` indicates that the counter-argument is analyzing the other person's initial reasoning and not attacking his or her personality per se. In this case, we should use a method which took into account a vector of words like ``\emph{You're literally just quoting}'' so the classifier can have a broader understanding of the speaker's intentions.
+    At the start of the quote, the contraction ``\emph{You're}'' indicates that the counter-argument is analyzing the other person's initial reasoning and not attacking his or her personality per se. In this case, we should use a method which took into account a vector of words like ``\emph{You're literally just quoting}'' so the classifier can have a broader understanding of the speaker's intentions.
     
     In the second sentence, \emph{understand the English language} is very likely to appear in an \emph{ad hominem} attack as diminishing the ability of the other person to understand English. 
     
@@ -112,16 +124,14 @@ In total, this dataset contains 29,278 paragraphs or comments, of which 3,866 ar
 \section{Intended model outcome}
 The ideal model should---given our earlier requirements---be able to predict with a certain accuracy/confidence if a given sentence or paragraph contains an \emph{ad hominem} fallacy. The confidence of the model will depend on the accuracy we are able to achieve. 
 
-Our model will not classify if the given quote contains a fallacy or not. It will classify if the given quote contains an \emph{ad hominem} type of fallacy or not.
-
-The user would have to keep in mind that the length of the paragraph can affect the analysis of it, meaning that more words and the interplay of those words can confuse the classifier. Furthermore, more sentences establish a bigger context and that could affect where specific sentences are fallacious or not.
+Our model will not classify if the given quote contains a general fallacy or not. It will classify if the given quote contains an \emph{ad hominem} type of fallacy or not. 
 
 \begin{figure}
     \includegraphics[width=1\textwidth]{figures/png/Model!Main_0.png}
     \caption{UML class diagram of training input, preprocessed input, and final output.}
     \label{fig:class-diagram}
 \end{figure}
-
+ 
 \begin{figure}
     \includegraphics[width=1\textwidth]{figures/png/Collaboration2!Interaction1!UntrainedModel_2.png}
     \caption{UML sequence diagram of the untrained model.}
@@ -147,6 +157,21 @@ Figure~\ref{fig:class-diagram} describes the classes input for the machine learn
 \section{Interaction overview}
 The workflow for our model is split into two parts, depending on the goal. For training the model, the sequence diagram in Figure~\ref{fig:untrained-diagram} describes the basic approach and Figure~\ref{fig:trained-diagram} illustrates how an end user can call the trained model to make a classification---in the literature often called a prediction---on paragraphs provided by him or her. 
 
+\subsection{Preprocessor actor}
+Before any model can be trained on the dataset, the data first has to be transformed into a machine readable format. Also, additional steps---like removing stopwords---are done at this stage. In short, the following sequence describes the preprocessing stage.
+
+\begin{enumerate}
+    \item Remove markdown formatting, as seen in Table~\ref{table:ah-dataset}
+    \item Remove capitalization
+    \item Remove punctuation and newline characters
+    \item Remove stopwords, like `the' or `at'
+    \item Vectorize on training dataset
+\end{enumerate} 
+
+For vectorization, different strategies will be implemented and compared, including TF-IDF and Word2Vec.
+
+\subsection{Model and optimizer actors}
+For the model to predict if a given paragraph is an \emph{ad hominem} attack, multiple models will be implemented, including naive bayes, an SVM, and possibly a LSTM. 
 
 \bibliographystyle{IEEEtran}
 \bibliography{main}
