@@ -259,3 +259,6 @@ TSWLatexianTemp*
 
 __latexindent_temp.tex
 .pdf
+
+__pycache__
+*.pyc
