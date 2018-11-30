@@ -7,6 +7,20 @@ def containsText(string):
 def isStr(body):
     return isinstance(body, str);
 
+def notSubReddit(word):
+    return word[0:2] != "r/";
+
+def notURL(word):
+    return "http" not in word;
+
+def removeWords(text):                              # Remove URLs and subreddits 
+    words = text.split(" ");
+    words = list(filter(notSubReddit, words));
+    words = list(filter(notURL, words));
+    newText = ' '.join(words);
+    return newText;          
+        
+
 def clean(text):
     subtext = text.split("\n");
     subtext = list(filter(None, subtext));          # Remove empty lines
