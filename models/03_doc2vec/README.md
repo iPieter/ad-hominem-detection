@@ -53,3 +53,7 @@ output = Dense(2, activation="sigmoid", name="output")(x)
 
 model = Model(inputs=[word2vecInput, doc2vecInput, posTagsInput], outputs=[output])
 ```
+
+# Model07.h5
+
+- Same as 06, but with ReLU activations on each layer
