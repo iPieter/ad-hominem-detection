@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, abort, Response
+from flask_cors import CORS
 import pandas as pd
 import tensorflow as tf
 import keras
@@ -15,7 +16,9 @@ from gensim.test.utils import datapath
 from keras.models import load_model
 from keras.layers import Input, Embedding, GRU, Dense, Masking, Bidirectional, concatenate, Dropout,Flatten
 from keras.models import Model
+
 app = Flask(__name__)
+CORS(app)
 
 maxLength = 400
 docVectorLength = 500  
@@ -33,6 +36,8 @@ def combineData( dataset ):
     i = 0
     # Split the sentence into an array of (cleaned) words
     splittedSentence = simple_preprocess(paragraph, deacc=True)
+    if len(splittedSentence) > 400:
+        splittedSentence = splittedSentence[0:400]
     if len(splittedSentence) != 0:
         for index, tag in enumerate(X_int.transform(np.array(nltk.pos_tag(splittedSentence))[:,1])):
             tags[i, index, tag] = 1.
@@ -108,7 +113,9 @@ def jsonify(data):
 
 @app.route('/predict', methods=["POST"])
 def predict():
-    x1, x2, x3 = combineData(request.args.get("par"))
+    par = request.form["par"]
+    print("Requested analysis of {}. ".format(par))
+    x1, x2, x3 = combineData(par)
     with graph.as_default():
         result = model.predict({'word2vec': x1, 'doc2vec': x2, 'pos_tags': x3})
         print( result )

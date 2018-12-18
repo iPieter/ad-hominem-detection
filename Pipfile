@@ -15,6 +15,7 @@ nltk = "*"
 numpy = "*"
 gensim = "*"
 sklearn = "*"
+flask-cors = "*"
 
 [dev-packages]
 pytest = "*"
