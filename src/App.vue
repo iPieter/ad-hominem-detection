@@ -15,10 +15,12 @@
       <li v-for="query in oldQueries" class="list-group-item col-md-6 offset-md-3">
         <div class="row">
           <div class="col-md-3">
-            <span v-if="query.result < 0.78" class="badge badge-pill badge-success">No ad hominem</span>
+            <span v-if="query.result < 0.3" class="badge badge-pill badge-success">No ad hominem</span>
+            <span v-else-if="query.result < 0.78" class="badge badge-pill badge-warning">Doubt</span>
             <span v-else class="badge badge-pill badge-danger">Ad hominem</span>
+            <p class="text-secondary" v-text="Math.round(query.result*100) + '%'"></p>
           </div>
-          <div class="col-md-auto" v-text="query.query"></div>
+          <div class="col-md-9"><p v-text="query.query"></p></div>
         </div>
       </li>
     </ul>
