@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, abort, Response
+from flask import Flask, request, abort, Response, jsonify
 from flask_cors import CORS
 import pandas as pd
 import tensorflow as tf
@@ -86,30 +86,16 @@ nltk.download('tagsets')
 
 wv_from_bin = KeyedVectors.load_word2vec_format(datapath("/Users/pieterdelobelle/Downloads/GoogleNews-vectors-negative300.bin.gz"), binary=True)  # C binary format
 
-
 pos_tags_list = np.array(['CC', 'CD', 'EX', 'FW', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNS','NNP', 'NNPS', 'PDT', 'POS', 'PRP', 'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WP', 'WP$', 'WRB', 'DT', "''"] )
 X_int = LabelEncoder().fit(pos_tags_list.reshape(-1, 1))
 graph = tf.get_default_graph()
 model = create_model()
-model.load_weights('models/03_doc2vec/model08.h5')
+#model.load_weights('models/03_doc2vec/model08.h5')
+model.load_weights('models/03_doc2vec/model_crazyMizedNN-200words.h5')
 
 print("----")
 print(wv_from_bin["test"])
 print("----")
-
-def jsonify(data):
-    json_data = dict()
-    for key, value in data.iteritems():
-        if isinstance(value, list): # for lists
-            value = [ jsonify(item) if isinstance(item, dict) else item for item in value ]
-        if isinstance(value, dict): # for nested lists
-            value = jsonify(value)
-        if isinstance(key, int): # if key is integer: > to string
-            key = str(key)
-        if type(value).__module__=='numpy': # if value is numpy.*: > to python list
-            value = value.tolist()
-        json_data[key] = value
-    return json_data
 
 @app.route('/predict', methods=["POST"])
 def predict():
@@ -120,3 +106,17 @@ def predict():
         result = model.predict({'word2vec': x1, 'doc2vec': x2, 'pos_tags': x3})
         print( result )
         return json.dumps(result.tolist())
+
+@app.route('/learn', methods=["POST"])
+def learn():
+    par = request.form["par"]
+    label = float(request.form["label"])
+    print("Label {} for '{}'. ".format(label, par))
+    print(np.array([[1-label, label]]).T)
+    print(np.array([[1-label, label]]).T.shape)
+    x1, x2, x3 = combineData(par)
+    with graph.as_default():
+        result = model.train_on_batch({'word2vec': x1, 'doc2vec': x2, 'pos_tags': x3}, {"output": np.array([[1-label, label]])})
+        print( result )
+        print( result.__class__ )
+        return json.dumps(result[0].astype(float))

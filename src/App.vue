@@ -20,7 +20,27 @@
             <span v-else class="badge badge-pill badge-danger">Ad hominem</span>
             <p class="text-secondary" v-text="Math.round(query.result*100) + '%'"></p>
           </div>
-          <div class="col-md-9"><p v-text="query.query"></p></div>
+          <div class="col-md-9">
+            <p v-text="query.query"></p>
+          </div>
+        </div>
+        <div class="row border-top pt-2 text-hover" v-if="!(query.id in feedbacks)">
+          <div class="col-md-6">
+            <a href="#" class v-on:click="feedback(query.id, query.query, 0)">
+              <i class="far fa-flag"></i> Label as negative
+            </a>
+          </div>
+          <div class="col-md-6">
+            <a href="#" class v-on:click="feedback(query.id, query.query, 1)">
+              <i class="fas fa-flag"></i> Label as an ad hominem
+            </a>
+          </div>
+        </div>
+        <div class="row border-top pt-2 text-hover" v-else>
+          <div class="col-md-12">
+            Labeling this paragraph impacted the network by 
+            <b v-text="Math.round(feedbacks[query.id]*1000)/1000"></b>.
+          </div>
         </div>
       </li>
     </ul>
@@ -43,11 +63,29 @@ export default {
   data() {
     return {
       current: "",
-      oldQueries: [
-      ]
+      index: 0,
+      oldQueries: [],
+      feedbacks: {}
     };
   },
   methods: {
+    feedback: function(id, query, label) {
+      var _this = this;
+
+      var bodyFormData = new FormData();
+      bodyFormData.set("par", query);
+      bodyFormData.set("label", label);
+
+      axios({
+        method: "post",
+        url: "http://localhost:5000/learn",
+        data: bodyFormData,
+        config: { headers: { "Content-Type": "multipart/form-data" } }
+      }).then(function(response) {
+        console.log(response);
+        Vue.set(_this.feedbacks, id, response.data)
+      });
+    },
     call: function() {
       console.log(this.current);
       var _this = this;
@@ -61,8 +99,12 @@ export default {
         data: bodyFormData,
         config: { headers: { "Content-Type": "multipart/form-data" } }
       }).then(function(response) {
-        console.log(response)
-        _this.oldQueries.unshift({ query: _this.current, result: response.data[0][1] });
+        console.log(response);
+        _this.oldQueries.unshift({
+          id: _this.index++,
+          query: _this.current,
+          result: response.data[0][1]
+        });
         _this.current = "";
       });
     }
@@ -87,5 +129,9 @@ html {
 }
 .columns {
   height: 100%;
+}
+
+.text-hover:not(:hover) {
+  opacity: 0.6;
 }
 </style>
