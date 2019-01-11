@@ -1,56 +1,45 @@
 <template>
-  <div id="app" class="container">
-    <div class="row mt-2">
-      <h1 class="pl-0 col-md-6 offset-md-3">Go on, insult us ...</h1>
+  <div id="app">
+    <div class="border-bottom py-2">
+      <ul class="container nav justify-content-center nav-fill">
+        <li class="nav-item">
+          <router-link to="/" class="navbar-brand mb-0 h1">Fallacy detection</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/about" class="nav-link" href="/about">About</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/contact" class="nav-link" href="/contact">Contact</router-link>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/iPieter/G0B34a_knowledge_and_the_web">
+            <i class="fab fa-github"></i>
+            View on Github
+          </a>
+        </li>
+        <li class="nav-item">
+          <router-link
+            to="/"
+            tag="button"
+            type="button"
+            class="btn btn-outline-primary"
+            href="/"
+          >Demo</router-link>
+        </li>
+      </ul>
     </div>
 
-    <div class="form-group row">
-      <textarea class="col-md-6 offset-md-3 form-control" v-model="current" rows="3"></textarea>
+    <div class="container">
+      <router-view class="view"></router-view>
     </div>
-    <div class="row">
-      <button class="btn btn-primary col-md-6 offset-md-3" v-on:click="call()">Submit form</button>
-    </div>
-
-    <ul class="list-group row mt-4">
-      <li v-for="query in oldQueries" class="list-group-item col-md-6 offset-md-3">
-        <div class="row">
-          <div class="col-md-3">
-            <span v-if="query.result < 0.3" class="badge badge-pill badge-success">No ad hominem</span>
-            <span v-else-if="query.result < 0.78" class="badge badge-pill badge-warning">Doubt</span>
-            <span v-else class="badge badge-pill badge-danger">Ad hominem</span>
-            <p class="text-secondary" v-text="Math.round(query.result*100) + '%'"></p>
-          </div>
-          <div class="col-md-9">
-            <p v-text="query.query"></p>
-          </div>
-        </div>
-        <div class="row border-top pt-2 text-hover" v-if="!(query.id in feedbacks)">
-          <div class="col-md-6">
-            <a href="#" class v-on:click="feedback(query.id, query.query, 0)">
-              <i class="far fa-flag"></i> Label as negative
-            </a>
-          </div>
-          <div class="col-md-6">
-            <a href="#" class v-on:click="feedback(query.id, query.query, 1)">
-              <i class="fas fa-flag"></i> Label as an ad hominem
-            </a>
-          </div>
-        </div>
-        <div class="row border-top pt-2 text-hover" v-else>
-          <div class="col-md-12">
-            Labeling this paragraph impacted the network by 
-            <b v-text="Math.round(feedbacks[query.id]*1000)/1000"></b>.
-          </div>
-        </div>
-      </li>
-    </ul>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
 import BootstrapVue from "bootstrap-vue";
-
+import FallacyView from "./components/FallacyView";
+import AboutView from "./components/AboutView";
 Vue.use(BootstrapVue);
 
 import "bootstrap/dist/css/bootstrap.css";
@@ -59,13 +48,19 @@ import axios from "axios";
 
 export default {
   name: "app",
-  components: {},
+  components: {
+    FallacyView
+  },
   data() {
     return {
       current: "",
       index: 0,
       oldQueries: [],
-      feedbacks: {}
+      feedbacks: {},
+      examples: [
+        "You are from the United States, so you could never understand what it's like to live in a country like that.",
+        "another test"
+      ]
     };
   },
   methods: {
@@ -83,10 +78,11 @@ export default {
         config: { headers: { "Content-Type": "multipart/form-data" } }
       }).then(function(response) {
         console.log(response);
-        Vue.set(_this.feedbacks, id, response.data)
+        Vue.set(_this.feedbacks, id, response.data);
       });
     },
-    call: function() {
+    call: function(example = "") {
+      if (example != "") this.current = example;
       console.log(this.current);
       var _this = this;
 

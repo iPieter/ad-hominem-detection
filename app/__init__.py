@@ -16,6 +16,11 @@ from gensim.test.utils import datapath
 from keras.models import load_model
 from keras.layers import Input, Embedding, GRU, Dense, Masking, Bidirectional, concatenate, Dropout,Flatten
 from keras.models import Model
+import sqlite3
+
+conn = sqlite3.connect("log.db", check_same_thread=False)
+
+c = conn.cursor()
 
 app = Flask(__name__)
 CORS(app)
@@ -84,7 +89,7 @@ def create_model():
 global graph
 nltk.download('tagsets')
 
-wv_from_bin = KeyedVectors.load_word2vec_format(datapath("/Users/pieterdelobelle/Downloads/GoogleNews-vectors-negative300.bin.gz"), binary=True)  # C binary format
+wv_from_bin = KeyedVectors.load_word2vec_format(datapath("/Users/pieterdelobelle/Downloads/GoogleNews-vectors-negative300-SLIM.bin.gz"), binary=True)  # C binary format
 
 pos_tags_list = np.array(['CC', 'CD', 'EX', 'FW', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNS','NNP', 'NNPS', 'PDT', 'POS', 'PRP', 'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WP', 'WP$', 'WRB', 'DT', "''"] )
 X_int = LabelEncoder().fit(pos_tags_list.reshape(-1, 1))
@@ -93,14 +98,14 @@ model = create_model()
 #model.load_weights('models/03_doc2vec/model08.h5')
 model.load_weights('models/03_doc2vec/model_crazyMizedNN-200words.h5')
 
-print("----")
-print(wv_from_bin["test"])
-print("----")
-
 @app.route('/predict', methods=["POST"])
 def predict():
     par = request.form["par"]
     print("Requested analysis of {}. ".format(par))
+    print( par.__class__)
+    c.execute("INSERT INTO request (par) VALUES(?)", [par])
+    conn.commit()
+
     x1, x2, x3 = combineData(par)
     with graph.as_default():
         result = model.predict({'word2vec': x1, 'doc2vec': x2, 'pos_tags': x3})
@@ -112,6 +117,13 @@ def learn():
     par = request.form["par"]
     label = float(request.form["label"])
     print("Label {} for '{}'. ".format(label, par))
+
+    c.execute(
+        "INSERT INTO learn (par, label) VALUES(?,?)",
+        (par, label))
+
+    conn.commit()
+
     print(np.array([[1-label, label]]).T)
     print(np.array([[1-label, label]]).T.shape)
     x1, x2, x3 = combineData(par)
