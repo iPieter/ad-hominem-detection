@@ -16,12 +16,14 @@ numpy = "*"
 gensim = "*"
 sklearn = "*"
 flask-cors = "*"
+pika = "*"
 
 [dev-packages]
 pytest = "*"
 bumpversion = "*"
 pytest-sugar = "*"
 pytest-cov = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.6"

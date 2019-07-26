@@ -1,8 +1,22 @@
 <template>
   <div>
-    <h1 class="mt-4" id="detecting-ad-hominem-attacks">Detecting ad hominem attacks</h1>
+    <h1 class="mt-4" id="detecting-ad-hominem-attacks">Computational ad hominem detection</h1>
     <p>
-      <em>This project was for the 2018-2019 course ‘Knowledge and the Web’ at KU Leuven.</em>
+      <b>
+        Pieter Delobelle, Murilo Cunha, Eric Massip Cano,
+        Jeroen Peperkamp and Bettina Berendt
+      </b>
+      <br />KU Leuven, Department of Computer Science
+      <br />Celestijnenlaan 200A, 3000 Leuven, Belgium
+    </p>
+    <p>
+      <em>
+        <a href="/80_paper.pdf">The paper</a> will be presented at
+        <a href="http://www.acl2019.org/EN/">ACL 2019</a> during the
+        <a
+          href="https://sites.google.com/view/acl19studentresearchworkshop/"
+        >student research workshop</a>.
+      </em>
     </p>
     <p>
       The term “fake news” is associated with journalism that deliberately spreads deceitful or inaccurate information. In the past years, the use of the term has increased drastically, interfering in major areas within a community. The importance is such that Italian schools have implemented “fake news detection” as part of the school curriculum. In the political sphere, it is not uncommon to see allegations of fake news and misinformation. Those calls that often target sources, reporters and organizations, instead of assessing the arguments themselves. This paper will discuss the possibility to
@@ -41,21 +55,40 @@
     </p>
     <figure class="figure">
       <img
-        class="figure-img img-fluid rounded col-8 mx-auto"
+        class="figure-img img-fluid rounded col-md-8 mx-auto"
         src="network.png"
         alt="Network description"
-      >
+      />
       <figcaption class="figure-caption text-center">Network description</figcaption>
     </figure>
     <p>The network had the following confusion matrix as output, when it was trained on approximately 20k paragraphs and tested on 8018 paragraphs.</p>
     <figure class="figure col-12">
       <img
-        class="figure-img img-fluid rounded col-5 mx-auto"
+        class="figure-img img-fluid rounded col-sm-9 col-md-5 mx-auto"
         src="conf_matrix.png"
         alt="Confusion matrix"
-      >
+      />
       <figcaption class="figure-caption text-center">Confusion matrix</figcaption>
     </figure>
+
+    <h2>Demo architecture</h2>
+    <p>
+      For this demo website, a
+      <a href="http://vuejs.org">Vue.js</a>
+      application is served as a frontend. The backend is a bit more complicated, since the presented model requires a reasonably performant machine with around 5 GB RAM. Since this gets expensive quicly, an architecture with a decentral worker system is used, as is illustrarted in the next figure.
+    </p>
+    <figure class="figure col-12">
+      <img
+        class="figure-img img-fluid rounded col-md-8 mx-auto"
+        src="architecture.png"
+        alt="Architecture for this demo"
+      />
+      <figcaption class="figure-caption text-center">Architecture for this demo</figcaption>
+    </figure>
+    <p>
+      This allows for a small, cheap server to run the broker,
+      <a href="http://rabbitmq.com">RabbitMQ</a> in this case, but still handle all requests. We even get load balancing for free!
+    </p>
   </div>
 </template>
 

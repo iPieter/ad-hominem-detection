@@ -1,6 +1,6 @@
 <template>
   <div class="mt-4">
-    <p>This website was created as a project for the course Knowledge and the Web by prof. Bettina Berendt at KU Leuven and is written and maintained by:</p>
+    <p>This website was initially created as a project for the course Knowledge and the Web and is written and maintained by:</p>
     <ul>
       <li>Eric Massip</li>
       <li>Murilo Cunha</li>
